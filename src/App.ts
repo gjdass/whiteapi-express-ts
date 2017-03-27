@@ -2,6 +2,8 @@ import * as express from "express";
 import * as logger from "morgan";
 import * as path from "path";
 import * as bodyParser from "body-parser";
+import * as jwt from "express-jwt";
+import Errors from './Errors';
 // routes
 import UsersRouter  from './routes/Users.router';
 
@@ -19,6 +21,7 @@ class App {
         this.express.use(logger('dev'));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended:false}));
+        this.express.use('/api/v1/*', jwt({secret: 'coucou'})); // protecting all the routes after
     }
 
     private routes(): void {
@@ -30,6 +33,7 @@ class App {
         });
         this.express.use('/', router);
         this.express.use('/api/v1/users', UsersRouter);
+        this.express.use(Errors);
     }
 
 }
