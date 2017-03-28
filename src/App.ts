@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 import * as jwt from "express-jwt";
 import Errors from './Errors';
 // routes
+import AuthRouter  from './routes/Auth.router';
 import UsersRouter  from './routes/Users.router';
 
 class App {
@@ -21,7 +22,7 @@ class App {
         this.express.use(logger('dev'));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended:false}));
-        this.express.use('/api/v1/*', jwt({secret: 'coucou'})); // protecting all the routes after
+        //this.express.use('/api/v1/*', jwt({secret: 'coucou'})); // protecting all the routes after
     }
 
     private routes(): void {
@@ -32,6 +33,7 @@ class App {
             });
         });
         this.express.use('/', router);
+        this.express.use('/auth', AuthRouter);
         this.express.use('/api/v1/users', UsersRouter);
         this.express.use(Errors);
     }

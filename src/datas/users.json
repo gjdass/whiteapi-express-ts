@@ -1,11 +1,13 @@
 [
     {
         "login": "gjdass",
+        "password": "gjdass",
         "firstname": "Gustave",
         "lastname": "Dassonville"
     },
     {
         "login": "sucrette",
+        "password": "sucrette",
         "firstname": "Julie",
         "lastname": "Planque"
     }

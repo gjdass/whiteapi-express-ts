@@ -1,5 +1,5 @@
+import UsersService from './../services/Users.service';
 import { Router, Request, Response, NextFunction } from 'express';
-const Users = require('../datas/users.json');
 
 export class UsersRouter {
     public router: Router
@@ -10,7 +10,10 @@ export class UsersRouter {
     }
 
     public getAll(req: Request, res: Response, nxt: NextFunction) {
-        res.send(Users);
+        UsersService.getAll().then(datas => {
+            res.status(200);
+            res.send(datas);
+        });
     }
 
     init() {

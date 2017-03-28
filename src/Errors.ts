@@ -9,7 +9,7 @@ export class Errors {
     init() {}
 
     public handleErrors(err, req: Request, res: Response, next: NextFunction) : void {
-        res.status(err.status).send(err.message);
+        res.status(err.status).send({message: err.message});
     }
 
 }
