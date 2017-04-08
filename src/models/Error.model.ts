@@ -1,4 +1,6 @@
-class Error {
+import { IResult } from './../interfaces/IResult.interface';
+
+export class Error implements IResult {
     public status: number;
     public message: string;
 
@@ -7,5 +9,3 @@ class Error {
         this.message = _message;
     }
 }
-
-export { Error };

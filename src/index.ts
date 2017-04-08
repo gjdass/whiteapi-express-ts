@@ -1,10 +1,11 @@
 import * as http from 'http';
 import * as morgan from 'morgan';
+import * as config from 'config';
 
 import App from './App';
 
+const port = config.get('server.port');
 
-const port = normalizePort(process.env.PORT || 8080);
 App.set('port', port);
 App.use(morgan('dev'));
 
@@ -12,13 +13,6 @@ const server = http.createServer(App);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
-function normalizePort(val: number|string): number|string|boolean {
-  let port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
-  if (isNaN(port)) return val;
-  else if (port >= 0) return port;
-  else return false;
-}
 
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== 'listen') throw error;

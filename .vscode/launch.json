@@ -14,7 +14,10 @@
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
-            ]
+            ],
+            "env": {
+                "NODE_ENV": "debug"
+            }
         }
     ]
 }

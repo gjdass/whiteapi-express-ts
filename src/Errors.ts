@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-export class Errors {
+class Errors {
 
     constructor() {
         this.init();
@@ -9,7 +9,8 @@ export class Errors {
     init() {}
 
     public handleErrors(err, req: Request, res: Response, next: NextFunction) : void {
-        res.status(err.status).send({message: err.message});
+        res.status(err.status);
+        res.send({status:err.status, message: err.message});
     }
 
 }

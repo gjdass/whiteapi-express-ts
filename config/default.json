@@ -1,0 +1,10 @@
+// DEFAULT DEV CONFIG
+{
+    "server": {
+        "port": 8080
+    },
+    "jwt": {
+        "secret": "dev-secret-1337",
+        "exprire": "24h"
+    }
+}

@@ -15,7 +15,7 @@ export class UsersService {
         });
     }
 
-    public getOneByLogin(login: string) {
+    public getOneByLogin(login: string):any {
         return new Promise((resolve, reject) => {
             var user = undefined;
             for (var i=0;i < Users.length;i++) {
