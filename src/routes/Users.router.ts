@@ -2,7 +2,7 @@ import UsersService from './../services/Users.service';
 import { Router, Request, Response, NextFunction } from 'express';
 
 export class UsersRouter {
-    public router: Router
+    public router: Router;
 
     constructor() {
         this.router = Router();
@@ -16,8 +16,18 @@ export class UsersRouter {
         });
     }
 
+    public getOne(req: Request, res: Response, nxt: NextFunction) {
+        UsersService.getOneByLogin(req.params.login).then(datas => {
+            res.status(200);
+            res.send(datas);
+        }, error => {
+            nxt(error);
+        });
+    }
+
     init() {
         this.router.get('/', this.getAll);
+        this.router.get('/:login', this.getOne)
     }
 }
 

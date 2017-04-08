@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "outDir": "dist"
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+    "sourceRoot": "dist/*"
   },
   "include": [
     "src/**/*.ts"

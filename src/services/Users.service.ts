@@ -1,3 +1,4 @@
+import { Error } from '../models/Error.model';
 import { Promise } from "es6-promise";
 
 const Users = require('../datas/users.json');
@@ -9,14 +10,13 @@ export class UsersService {
     }
 
     public getAll() {
-        var promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             resolve(Users);
         });
-        return promise;
     }
 
     public getOneByLogin(login: string) {
-        var promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             var user = undefined;
             for (var i=0;i < Users.length;i++) {
                 if (Users[i].login === login) {
@@ -26,12 +26,11 @@ export class UsersService {
             if (user) {
                 resolve(user);
             } else {
-                reject(user);
+                reject(new Error(404, 'User not found'));
             }
         });
-        return promise;
     }
 
 }
 
-export default new UsersService;
+export default new UsersService();
