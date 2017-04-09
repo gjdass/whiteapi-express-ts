@@ -22,7 +22,8 @@ class App {
     }
 
     private middleware(): void {
-        this.express.use(logger('dev'));
+        if (config.get('logs.level') != 'none')
+            this.express.use(logger(config.get('logs.level') as string));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended:false}));
         this.express.use('/api/v1/*', jwtMiddleware({secret: config.get('jwt.secret'), getToken:this.getToken})); // protecting all the routes after

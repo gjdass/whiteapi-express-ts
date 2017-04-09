@@ -6,5 +6,8 @@
     "jwt": {
         "secret": "dev-secret-1337",
         "exprire": "24h"
+    },
+    "logs": {
+        "level": "dev"
     }
 }

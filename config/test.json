@@ -1,0 +1,6 @@
+// DEFAULT DEV CONFIG
+{
+    "logs": {
+        "level": "none"
+    }
+}
