@@ -21,7 +21,7 @@ export class AuthRouter {
                     var token = jwt.sign({login:user.login}, 
                         config.get('jwt.secret') as string, 
                         { expiresIn:'1h' });
-                    nxt(new Success(200, token));
+                    nxt(new Success(200, {token:token}));
                 } else {
                     nxt(new Error(401, 'Bad password'));
                 }
