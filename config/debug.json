@@ -1,0 +1,6 @@
+// DEBUG CONFIG
+{
+    "server": {
+        "port": 1337
+    }
+}

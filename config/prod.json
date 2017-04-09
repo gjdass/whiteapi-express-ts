@@ -1,0 +1,9 @@
+// PROD CONFIG
+{
+    "server": {
+        "port": 4242
+    },
+    "jwt": {
+        "expire": "1h"
+    }
+}
