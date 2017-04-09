@@ -1,4 +1,3 @@
-import { Promise } from 'es6-promise';
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import * as jwt from 'express-jwt';
@@ -9,30 +8,49 @@ import app from '../src/App';
 chai.use(chaiHttp);
 const expect = chai.expect;
 const should = chai.should();
+let token:string;
 
 describe('usersRoute', () => {
 
-  beforeEach(done => {
-    done();
-  });
-
-  afterEach(done => {
-    done();
-  });
-
-  it('responds with JSON array', done => {
-    return chai.request(app).get('/api/v1/users')
-    .then(res => {
-      expect(res).to.be.json;
+  before(done => {
+    chai.request(app)
+    .post('/auth/login')
+    .send({
+      login: 'gjdass',
+      password: 'gjdass'
+    })
+    .end((err, res) => {
       expect(res.status).to.equal(200);
+      expect(res.body.datas).to.have.property('token');
+      token = res.body.datas.token;
       done();
-    }, err => {
-      done(err);
     });
   });
 
-  it('should be array with 2 records', done => {
-    return chai.request(app).get('/api/v1/users')
+  it('should return 401 if no valid token provided', done => {
+    chai.request(app)
+    .get('/api/v1/users')
+    .end((err, res) => {
+      expect(err.status).to.equal(401);
+      done();
+    })
+  });
+
+  it('getAll() should responds with JSON array', (done) => {
+    chai.request(app)
+    .get('/api/v1/users')
+    .set('Authorization', token)
+    .end((err, res) => {
+      expect(res).to.be.json;
+      expect(res.status).to.equal(200);
+      done();
+    });
+  });
+
+  it('getAll() should be array with 2 records', done => {
+    chai.request(app)
+    .get('/api/v1/users')
+    .set('Authorization', token)
     .then(res => {
       expect(res.body).to.be.an('array');
       expect(res.body).to.have.length(2);
@@ -42,9 +60,7 @@ describe('usersRoute', () => {
         res.body[i].should.have.property('lastname');
       }
       done();
-    }, err => {
-      done(err);
-    });
+    }, err => done(err));
   });
 
 });
