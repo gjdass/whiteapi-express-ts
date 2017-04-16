@@ -20,7 +20,7 @@ You can clone it and start to build your own API.
 
 `npm install -g mocha nodemon gulp`
 
-Mocha for tests, Nodemon for tracking changes in `dist/` directory and keep the API up-to-date and running, Gulp in order to watch and transpil TS `/src` in JS `/dist`.
+Mocha for tests, Nodemon for tracking changes in `dist/` directory and keep the API up-to-date and running, Gulp in order to watch and transpil TS `src/` in JS `dist/`.
 
 #### Install local dependencies
 
@@ -38,7 +38,7 @@ See the `gulpfile.js` for more informations about commands.
 
 `npm start`
 
-To start the API in dev mode. It uses `nodemon` package in order to watch `/dist` changes gulp is producing and reload the API at each change.
+To start the API in dev mode. It uses `nodemon` package in order to watch `dist/` changes gulp is producing and reload the API at each change.
 
 #### Test
 
