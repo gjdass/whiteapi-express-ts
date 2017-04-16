@@ -18,9 +18,9 @@ export class AuthRouter {
         if (req.body && req.body.login && req.body.password) {
             UsersService.getOneByLogin(req.body.login).then(user => {
                 if (user.password === req.body.password) {
-                    var token = jwt.sign({login:user.login}, 
+                    let token = jwt.sign({login:user.login}, 
                         config.get('jwt.secret') as string, 
-                        { expiresIn:'1h' });
+                        { expiresIn: config.get('jwt.expire') as string });
                     nxt(new Success(200, {token:token}));
                 } else {
                     nxt(new Error(401, 'Bad password'));

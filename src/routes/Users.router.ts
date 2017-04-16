@@ -1,3 +1,4 @@
+import { Success } from './../models/Success.model';
 import UsersService from './../services/Users.service';
 import { Router, Request, Response, NextFunction } from 'express';
 
@@ -11,15 +12,15 @@ export class UsersRouter {
 
     public getAll(req: Request, res: Response, nxt: NextFunction) {
         UsersService.getAll().then(datas => {
-            res.status(200);
-            res.send(datas);
+            nxt(new Success(200, datas));
+        }, error => {
+            nxt(error);
         });
     }
 
     public getOne(req: Request, res: Response, nxt: NextFunction) {
         UsersService.getOneByLogin(req.params.login).then(datas => {
-            res.status(200);
-            res.send(datas);
+            nxt(new Success(200, datas));
         }, error => {
             nxt(error);
         });
