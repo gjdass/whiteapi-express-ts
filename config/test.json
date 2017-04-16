@@ -2,5 +2,11 @@
 {
     "logs": {
         "level": "none"
+    },
+    "tests": {
+        "auth": {
+            "login": "gjdass",
+            "password": "gjdass"
+        }
     }
 }

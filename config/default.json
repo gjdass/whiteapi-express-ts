@@ -5,9 +5,15 @@
     },
     "jwt": {
         "secret": "dev-secret-1337",
-        "exprire": "24h"
+        "expire": "24h"
     },
     "logs": {
         "level": "dev"
+    },
+    "tests": {
+        "auth": {
+            "login": "",
+            "password": ""
+        }
     }
 }

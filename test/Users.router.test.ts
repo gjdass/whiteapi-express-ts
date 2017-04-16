@@ -1,6 +1,7 @@
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import * as jwt from 'express-jwt';
+import * as config from 'config';
 import chaiHttp = require('chai-http');
 
 import app from '../src/App';
@@ -16,8 +17,8 @@ describe('usersRoute', () => {
     chai.request(app)
     .post('/auth/login')
     .send({
-      login: 'gjdass',
-      password: 'gjdass'
+      login: config.get("tests.auth.login"),
+      password: config.get("tests.auth.password")
     })
     .end((err, res) => {
       expect(res.status).to.equal(200);
@@ -27,7 +28,7 @@ describe('usersRoute', () => {
     });
   });
 
-  it('should return 401 if no valid token provided', done => {
+  it('GET /users should return 401 if no valid token provided', done => {
     chai.request(app)
     .get('/api/v1/users')
     .end((err, res) => {
@@ -36,31 +37,35 @@ describe('usersRoute', () => {
     })
   });
 
-  it('getAll() should responds with JSON array', (done) => {
+  it('GET /users should return 200 with JSON array containing 2 records', (done) => {
     chai.request(app)
     .get('/api/v1/users')
     .set('Authorization', token)
     .end((err, res) => {
       expect(res).to.be.json;
       expect(res.status).to.equal(200);
+      expect(res.body.datas).to.be.an('array');
+      expect(res.body.datas).to.have.length(2);
+      for (let i = 0; i < 2; i++) {
+        res.body.datas[i].should.have.property('login');
+        res.body.datas[i].should.have.property('firstname');
+        res.body.datas[i].should.have.property('lastname');
+      }
       done();
     });
   });
 
-  it('getAll() should be array with 2 records', done => {
+  it('GET /users/<user> should return 200 with a user object', (done) => {
     chai.request(app)
-    .get('/api/v1/users')
+    .get('/api/v1/users/' + config.get('tests.auth.login'))
     .set('Authorization', token)
-    .then(res => {
-      expect(res.body).to.be.an('array');
-      expect(res.body).to.have.length(2);
-      for (let i = 0; i < 2; i++) {
-        res.body[i].should.have.property('login');
-        res.body[i].should.have.property('firstname');
-        res.body[i].should.have.property('lastname');
-      }
+    .end((err, res) => {
+      expect(res).to.be.json;
+      expect(res.status).to.equal(200);
+      expect(res.body.datas).to.be.an('object');
+      expect(res.body.datas).to.have.property('login', config.get('tests.auth.login'));
       done();
-    }, err => done(err));
+    });
   });
 
 });
