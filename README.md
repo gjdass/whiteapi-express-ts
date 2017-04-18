@@ -1,5 +1,7 @@
 ## Node API in TypeScript
 
+[![build status](https://gitlab.gjdass.fr/gjdass/whiteapp-express-api-ts/badges/master/build.svg)](https://gitlab.gjdass.fr/gjdass/whiteapp-express-api-ts/commits/master)
+
 This is a white-app designed to start a node ExpressJS API using TypeScript.
 You can clone it and start to build your own API.
 
