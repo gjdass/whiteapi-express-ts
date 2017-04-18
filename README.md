@@ -1,5 +1,7 @@
 ## Node API in TypeScript
 
+[![build status](https://gitlab.gjdass.fr/gjdass/whiteapp-express-api-ts/badges/master/build.svg)](https://gitlab.gjdass.fr/gjdass/whiteapp-express-api-ts/commits/master)
+
 This is a white-app designed to start a node ExpressJS API using TypeScript.
 You can clone it and start to build your own API.
 
@@ -12,6 +14,8 @@ You can clone it and start to build your own API.
     - [Start](#start)
     - [Test](#test)
 - [Configuration](#configuration)
+- [Gulp](#gulp)
+- [CI with GitLab](#ci-with-gitlab)
 - [Datas storage](#datas-storage)
 
 ### Quick start
@@ -28,23 +32,25 @@ Mocha for tests, Nodemon for tracking changes in `dist/` directory and keep the 
 
 #### Build
 
-`gulp`
+`gulp build`
 
-To build the project into the `dist/` directory and watching for changes in `src/` directory.
+To build the project into the `dist/` directory.
 
-See the `gulpfile.js` for more informations about commands.
+See the [Gulp section](#gulp) for more informations about commands.
 
 #### Start
 
 `npm start`
 
-To start the API in dev mode. It uses `nodemon` package in order to watch `dist/` changes gulp is producing and reload the API at each change.
+To start the API in dev mode. 
+
+**Note :** It uses `nodemon` in order to watch `dist/` changes that `gulp watch` is producing and reloads the API at each change it detects.
 
 #### Test
 
 `npm test`
 
-Will launch (with Mocha) the tests in `tests/` directory.
+Will launch the tests from `tests/*` files.
 
 ### Configuration
 
@@ -81,6 +87,19 @@ Default configuration :
 
 All of these entries can be overridden in `config/<custom_env>.json` files, even partially like only `server.port`. See the other config files.
 
+### Gulp
+
+Gulp is configured with 5 tasks :
+- `build-ts` which triggers the `src/` TypeScript files transpilation
+- `build-assets` which triggers the `src/datas` JSON files copy to `dist/datas`
+- `watch` which starts watching changes on TS and JSON files into `src/` and triggers builds when needed
+- `default` which triggers `watch`
+- `build` which triggers a single full build (without watching)
+
+### CI with GitLab
+
+To write.
+
 ### Datas storage
 
-To come.
+Not implemented. To come.
