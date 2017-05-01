@@ -8,8 +8,9 @@ You can clone it and start to build your own API.
 ### Summary
 
 - [Quick start](#quick-start)
-    - [Global dependencies](#install-global-dependencies)
-    - [Local dependencies](#install-local-dependencies)
+- [Dependencies](#dependencies)
+- [Commands](#commands)
+    - [Watch](#watch)
     - [Build](#build)
     - [Start](#start)
     - [Test](#test)
@@ -20,29 +21,44 @@ You can clone it and start to build your own API.
 
 ### Quick start
 
-#### Install global dependencies
+Install dependencies, build and start server.
 
-`npm install -g mocha nodemon gulp`
+```shell
+$> npm install
+$> npm run build
+$> npm start
+```
 
-Mocha for tests, Nodemon for tracking changes in `dist/` directory and keep the API up-to-date and running, Gulp in order to watch and transpil TS `src/` in JS `dist/`.
+### Dependencies
 
-#### Install local dependencies
+We use local dependencies only for practical matters. No need to install global ones since NPM lets us use local packages thanks to `package.json` scripts. Feel free to install some packages globally such as `gulp` or `nodemon` and `mocha` if you prefer run things by yourself.
 
-`npm install`
+See `package.json` to get the list.
+
+__Note__ : dependencies are for now not well versionned since I don't really care for development.
+
+### Commands
+
+`npm` handles all the commands for the project. It uses `gulp` underneath for build and watch.
+
+#### Watch
+
+`npm run watch`
+
+Run a [build](#build) and then watch the TypeScript files for changes (using `gulp`).
 
 #### Build
 
-`gulp build`
+`npm run build`
 
-To build the project into the `dist/` directory.
-
-See the [Gulp section](#gulp) for more informations about commands.
+To build the project into the `dist/` directory (using `gulp`).
+Sourcemaps are generated in order to be able to debug into VSCode (TS -> JS).
 
 #### Start
 
 `npm start`
 
-To start the API in dev mode. 
+To start the API in dev mode.
 
 **Note :** It uses `nodemon` in order to watch `dist/` changes that `gulp watch` is producing and reloads the API at each change it detects.
 
@@ -89,8 +105,8 @@ All of these entries can be overridden in `config/<custom_env>.json` files, even
 
 ### Gulp
 
-Gulp is configured with 5 tasks :
-- `build-ts` which triggers the `src/` TypeScript files transpilation
+Gulp has 5 tasks configured :
+- `build-ts` which triggers the `src/` TypeScript files transpilation with sourcemaps generation
 - `build-assets` which triggers the `src/datas` JSON files copy to `dist/datas`
 - `watch` which starts watching changes on TS and JSON files into `src/` and triggers builds when needed
 - `default` which triggers `watch`
