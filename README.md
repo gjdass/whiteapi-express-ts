@@ -24,9 +24,9 @@ You can clone it and start to build your own API.
 Install dependencies, build and start server.
 
 ```shell
-$> npm install
-$> npm run build
-$> npm start
+$ npm install
+$ npm run build
+$ npm start
 ```
 
 ### Dependencies
@@ -43,20 +43,26 @@ __Note__ : dependencies are for now not well versionned since I don't really car
 
 #### Watch
 
-`npm run watch`
+```shell
+$ npm run watch
+```
 
 Run a [build](#build) and then watch the TypeScript files for changes (using `gulp`).
 
 #### Build
 
-`npm run build`
+```shell
+$ npm run build
+```
 
 To build the project into the `dist/` directory (using `gulp`).
 Sourcemaps are generated in order to be able to debug into VSCode (TS -> JS).
 
 #### Start
 
-`npm start`
+```shell
+$ npm start
+```
 
 To start the API in dev mode.
 
@@ -64,7 +70,9 @@ To start the API in dev mode.
 
 #### Test
 
-`npm test`
+```shell
+$ npm test
+```
 
 Will launch the tests from `tests/*` files.
 
