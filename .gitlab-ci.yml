@@ -1,26 +1,17 @@
 stages:
-  - docker
   - build
   - test
-
-docker:
-  stage: docker
-  tags:
-  - shell
-  script:
-  - docker build -t gjdass/node-mocha-gulp .
 
 build:
   stage: build
   tags:
   - node
-  - gulp
   cache:
     paths:
     - node_modules/
   script:
   - npm install
-  - gulp build
+  - npm run build
   artifacts:
     name: "${CI_JOB_STAGE}_${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_{$CI_COMMIT_SHA}"
     expire_in: 3d
@@ -33,7 +24,6 @@ test:
   stage: test
   tags:
   - node
-  - mocha
   dependencies:
   - build
   script:

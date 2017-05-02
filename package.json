@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon dist/index.js",
-    "test": "cross-env NODE_ENV=test mocha --reporter spec --compilers ts:ts-node/register test/**/*.test.ts"
+    "test": "cross-env NODE_ENV=test mocha --reporter spec --compilers ts:ts-node/register test/**/*.test.ts",
+    "build": "gulp build",
+    "watch": "gulp"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +46,7 @@
     "express": "^4.15.2",
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.3.0",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "nodemon": "^1.11.0"
   }
 }
