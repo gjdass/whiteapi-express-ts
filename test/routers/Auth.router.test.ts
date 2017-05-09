@@ -4,14 +4,14 @@ import * as jwt from 'express-jwt';
 import * as config from 'config';
 import chaiHttp = require('chai-http');
 
-import app from '../src/App';
+import app from '../../src/App';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 const should = chai.should();
 let token:string;
 
-describe('authRoute', () => {
+describe('[authRoute]', () => {
 
   it('POST /login should return 400 if no valid body', done => {
     chai.request(app)

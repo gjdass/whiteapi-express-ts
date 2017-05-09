@@ -1,5 +1,4 @@
 import * as http from 'http';
-import * as morgan from 'morgan';
 import * as config from 'config';
 
 import App from './App';
@@ -7,7 +6,6 @@ import App from './App';
 const port = config.get('server.port');
 
 App.set('port', port);
-App.use(morgan('dev'));
 
 const server = http.createServer(App);
 server.listen(port);

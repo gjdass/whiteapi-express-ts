@@ -7,19 +7,32 @@ import app from '../src/App';
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-describe('baseRoute', () => {
+describe('[baseRoute]', () => {
 
-  it('should be json', () => {
-    return chai.request(app).get('/')
-    .then(res => {
+  it('should be json', done => {
+    chai.request(app)
+    .get('/')
+    .end((err, res) => {
       expect(res.type).to.eql('application/json');
+      done();
     });
   });
 
-  it('should have a message prop', () => {
-    return chai.request(app).get('/')
-    .then(res => {
+  it('should have a message prop', done => {
+    chai.request(app)
+    .get('/')
+    .end((err, res) => {
       expect(res.body.message).to.eql('Hello World!');
+      done();
+    });
+  });
+
+  it('should respond with error 404', done => {
+    chai.request(app)
+    .get('/unknownRoute')
+    .end((err, res) => {
+      expect(err.status).to.be.equal(404);
+      done();
     });
   });
 

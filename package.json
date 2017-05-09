@@ -19,12 +19,16 @@
     "@types/config": "0.0.32",
     "@types/debug": "0.0.29",
     "@types/express": "^4.0.35",
+    "@types/gulp": "^4.0.2",
+    "@types/gulp-sourcemaps": "0.0.30",
+    "@types/gulp-typescript": "^2.13.0",
     "@types/jsonwebtoken": "^7.2.0",
     "@types/mocha": "^2.2.40",
     "@types/mockery": "^1.4.29",
-    "@types/morgan": "^1.7.32",
+    "@types/mongoose": "^4.7.11",
     "@types/node": "^7.0.8",
-    "@types/sinon": "^2.1.2",
+    "@types/sequelize": "^4.0.52",
+    "@types/sinon": "^2.2.1",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "cross-env": "^4.0.0",
@@ -34,7 +38,7 @@
     "mocha": "^3.2.0",
     "mockery": "^2.0.0",
     "path": "^0.12.7",
-    "sinon": "^2.1.0",
+    "sinon": "^2.2.0",
     "ts-node": "^2.1.0",
     "typescript": "^2.2.1"
   },
@@ -46,7 +50,10 @@
     "express": "^4.15.2",
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.3.0",
-    "morgan": "^1.8.1",
-    "nodemon": "^1.11.0"
+    "log4js": "^1.1.1",
+    "mongoose": "^4.9.5",
+    "mysql": "^2.13.0",
+    "nodemon": "^1.11.0",
+    "sequelize": "^3.30.4"
   }
 }
