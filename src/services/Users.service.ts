@@ -2,8 +2,6 @@ import { Error } from '../models/Error.model';
 import { Promise } from "es6-promise";
 import User from '../models/User.model';
 
-const Users = require('../datas/users.json');
-
 class UsersService {
 
     private static _instance:UsersService = new UsersService();
@@ -27,6 +25,7 @@ class UsersService {
         return new Promise((resolve, reject) => {
             User.findOne({ login:login }, (err, res) => {
                 if (err) { reject(err); }
+                if (!res || res == null) { reject(new Error(404, "User not found.")); }
                 resolve(res);
             });
         });

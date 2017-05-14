@@ -46,12 +46,6 @@ describe('[usersRoute]', () => {
       expect(res).to.be.json;
       expect(res.status).to.equal(200);
       expect(res.body.datas).to.be.an('array');
-      expect(res.body.datas).to.have.length(2);
-      for (let i = 0; i < 2; i++) {
-        res.body.datas[i].should.have.property('login');
-        res.body.datas[i].should.have.property('firstname');
-        res.body.datas[i].should.have.property('lastname');
-      }
       done();
     });
   });

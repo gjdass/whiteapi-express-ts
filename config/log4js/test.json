@@ -1,0 +1,5 @@
+{
+    // no logs needed for tests
+    "appenders": [
+    ]
+}

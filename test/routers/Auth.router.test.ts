@@ -1,7 +1,10 @@
+import { AuthRouter } from './../../src/routes/Auth.router';
+import * as sinon from 'sinon';
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import * as jwt from 'express-jwt';
 import * as config from 'config';
+import * as mockery from 'mockery';
 import chaiHttp = require('chai-http');
 
 import app from '../../src/App';
@@ -10,6 +13,7 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const should = chai.should();
 let token:string;
+var coucou;
 
 describe('[authRoute]', () => {
 
@@ -50,6 +54,17 @@ describe('[authRoute]', () => {
       expect(res.status).to.equal(200);
       expect(res.body.datas).to.have.property('token');
       expect(res.body.datas.token).to.have.length.greaterThan(0);
+      done();
+    })
+  });
+
+  
+  it('POST /register should return 200', done => {
+    chai.request(app)
+    .post('/auth/register')
+    .send({ login: 'test_register', password: 'test_register', firstname: 'test_register', lastname: 'test_register' })
+    .end((err, res) => {
+      expect(res.status).to.equal(200);
       done();
     })
   });
