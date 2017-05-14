@@ -2,5 +2,8 @@
 {
     "server": {
         "port": 1337
+    },
+    "logs": {
+        "log4js-config": "debug.json"
     }
 }

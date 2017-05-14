@@ -9,7 +9,7 @@ class Success {
     init() {}
 
     public handleSuccess(obj, req: Request, res: Response, nxt: NextFunction) : void {
-        if (obj && obj.status < 299) {
+        if (obj && obj.status < 400) {
             res.status(obj.status);
             res.send(obj);
         }
@@ -20,4 +20,4 @@ class Success {
 
 }
 
-export default new Success().handleSuccess;
+export default new Success();

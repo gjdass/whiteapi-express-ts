@@ -1,0 +1,15 @@
+{
+    "appenders": [
+        {
+            "type": "console",
+            "level": "ALL"
+        },
+        {
+            "type": "logstashUDP",
+            "host": "127.0.0.1",
+            "port": "5044",
+            "logType": "api",
+            "level": "ALL"
+        }
+    ]
+}

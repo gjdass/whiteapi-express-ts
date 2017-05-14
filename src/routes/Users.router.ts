@@ -1,6 +1,7 @@
 import { Success } from './../models/Success.model';
 import UsersService from './../services/Users.service';
 import { Router, Request, Response, NextFunction } from 'express';
+let _service = UsersService.getInstance();
 
 export class UsersRouter {
     public router: Router;
@@ -11,7 +12,7 @@ export class UsersRouter {
     }
 
     public getAll(req: Request, res: Response, nxt: NextFunction) {
-        UsersService.getAll().then(datas => {
+        _service.getAll().then(datas => {
             nxt(new Success(200, datas));
         }, error => {
             nxt(error);
@@ -19,7 +20,7 @@ export class UsersRouter {
     }
 
     public getOne(req: Request, res: Response, nxt: NextFunction) {
-        UsersService.getOneByLogin(req.params.login).then(datas => {
+        _service.getOneByLogin(req.params.login).then(datas => {
             nxt(new Success(200, datas));
         }, error => {
             nxt(error);
@@ -28,7 +29,7 @@ export class UsersRouter {
 
     init() {
         this.router.get('/', this.getAll);
-        this.router.get('/:login', this.getOne)
+        this.router.get('/:login', this.getOne);
     }
 }
 
