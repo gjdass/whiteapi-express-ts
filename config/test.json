@@ -1,7 +1,7 @@
 // DEFAULT DEV CONFIG
 {
     "logs": {
-        "level": "none"
+        "log4js-config": "test.json"
     },
     "tests": {
         "auth": {
