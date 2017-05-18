@@ -1,4 +1,5 @@
-import { Promise } from 'es6-promise';
+import {createExpressServer} from 'routing-controllers';
+import "reflect-metadata";
 import * as express from "express";
 import * as path from "path";
 import * as bodyParser from "body-parser";
@@ -10,8 +11,9 @@ import * as log4js from "log4js";
 import Success from './Success';
 import Errors from './Errors';
 // routes
-import AuthRouter from './routes/Auth.router';
-import UsersRouter from './routes/Users.router';
+import { HomeController } from './controllers/Home.controller';
+import { AuthController } from './controllers/Auth.controller';
+import { UsersController } from './controllers/Users.controller';
 
 class App {
     
@@ -21,10 +23,16 @@ class App {
     constructor() {
         mongoose.connect(this.buildMongoUri());
         (<any>mongoose).Promise = Promise;
-        this.express = express();
+        this.express = createExpressServer({
+            controllers: [
+                HomeController,
+                AuthController,
+                UsersController
+            ]
+        })
+        //this.express = express();
         this.buildLoggers();
         this.middleware();
-        this.routes();
     }
 
     private middleware(): void {
@@ -33,21 +41,6 @@ class App {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended:false}));
         this.express.use('/api/v1/*', jwtMiddleware({secret: config.get('jwt.secret'), getToken:this.getToken})); // protecting all the routes after
-    }
-
-    private routes(): void {
-        let router = express.Router();
-        router.get('/', (req, res, next) => {
-            res.json({
-                message: 'Hello World!'
-            });
-        });
-        this.express.use('/', router);
-        this.express.use('/auth', AuthRouter);
-        this.express.use('/api/v1/users', UsersRouter);
-        this.express.use(Success.handleSuccess);
-        this.express.use(Errors.handleErrors);
-        this.express.use(Errors.notFound);
     }
 
     private getToken(req: Request):string {
