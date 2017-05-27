@@ -1,6 +1,6 @@
 import { Error } from '../models/Error.model';
-import { Promise } from "es6-promise";
 import User from '../models/User.model';
+import IUser from '../interfaces/IUser.interface';
 
 class UsersService {
 
@@ -12,8 +12,8 @@ class UsersService {
         return UsersService._instance;
     }
 
-    public getAll() {
-        return new Promise((resolve, reject) => {
+    public getAll(): Promise<IUser[]> {
+        return new Promise<IUser[]>((resolve, reject) => {
             User.find({}, (err, res) => {
                 if (err) { reject(err); }
                 resolve(res);
@@ -21,8 +21,8 @@ class UsersService {
         });
     }
 
-    public getOneByLogin(login: string):any {
-        return new Promise((resolve, reject) => {
+    public getOneByLogin(login: string): Promise<IUser> {
+        return new Promise<IUser>((resolve, reject) => {
             User.findOne({ login:login }, (err, res) => {
                 if (err) { reject(err); }
                 if (!res || res == null) { reject(new Error(404, "User not found.")); }
