@@ -1,40 +1,46 @@
+import 'reflect-metadata';
+import { Controller, Get, Post, RequestParam, RequestBody } from 'inversify-express-utils';
+import { injectable, inject } from 'inversify';
+import { IHttpResponse } from './../interfaces/IHttpResponse';
 import { Success } from './../models/Success.model';
-import {HttpError, InternalServerError, Body, BadRequestError, JsonController, Post, BodyParam, NotFoundError} from 'routing-controllers';
+import { Error } from './../models/Error.model';
 import UsersService from './../services/Users.service';
 import * as jwt from "jsonwebtoken"
 import * as config from "config";
 let _usersService = UsersService.getInstance();
 
-@JsonController("/auth")
+@Controller("/auth")
+@injectable()
 export class AuthController {
 
     @Post("/login")
-    public async login(@BodyParam("username") username: string,
-                       @BodyParam("password") password: string)
+    public async login(@RequestBody("username") username: string,
+                       @RequestBody("password") password: string): Promise<IHttpResponse>
     {
-        // here we authenticate the user
-        let token = await _usersService.getOneByLogin(username).then(user => {
+        try {
+            // here we authenticate the user
+            let user = await _usersService.getOneByLogin(username);
             if (user.password === password) {
                 let token = jwt.sign({login:user.login}, 
-                    config.get('jwt.secret') as string, 
-                    { expiresIn: config.get('jwt.expire') as string });
+                        config.get('jwt.secret') as string, 
+                        { expiresIn: config.get('jwt.expire') as string });
                 return new Success(200, "Connected.", {token: token});
             } else {
-                return new BadRequestError("Bad password.");
+                throw new Error(401, 'Bad Password.');
             }
-        }, error => {
-            return new NotFoundError("User not found.");
-        });
-        return token;
+        } catch (err) {
+            throw err;
+        }
     }
 
     @Post("/register")
-    public async register(@Body() user: any) {
-        return await _usersService.register(user).then(datas => {
-            return new Success(201, "User created.");
-        }, error => {
-            return new InternalServerError("Can't register right now, sorry.");
-        });
+    public async register(@RequestBody() user: any): Promise<IHttpResponse> {
+        try {
+            await _usersService.register(user);
+            return new Success(200, 'User created.');
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

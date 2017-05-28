@@ -2,7 +2,7 @@
  * Mongo User schema
  */
 
-import IUser from '../interfaces/IUser.interface';
+import { IUser } from '../interfaces/IUser';
 import * as mongoose from 'mongoose';
 import { Promise } from 'es6-promise';
 

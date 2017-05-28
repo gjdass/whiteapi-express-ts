@@ -1,6 +1,6 @@
+import { IUser } from './../interfaces/IUser';
 import { Error } from '../models/Error.model';
 import User from '../models/User.model';
-import IUser from '../interfaces/IUser.interface';
 
 class UsersService {
 
@@ -31,7 +31,7 @@ class UsersService {
         });
     }
 
-    public register(params:object):any {
+    public register(params:object): Promise<IUser> {
         var user = new User({
             login: params['login'],
             password: params['password'],
