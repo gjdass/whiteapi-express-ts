@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Controller, Get, RequestParam, } from 'inversify-express-utils';
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 import { IHttpResponse } from './../interfaces/IHttpResponse';
 import { Success } from './../models/Success.model';
 

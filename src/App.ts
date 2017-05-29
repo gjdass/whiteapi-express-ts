@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { Container } from 'inversify';
 import { interfaces, InversifyExpressServer, TYPE } from 'inversify-express-utils';
+import { container } from './ioc/container.default'
 import * as express from "express";
 import * as path from "path";
 import * as bodyParser from "body-parser";
@@ -9,10 +10,6 @@ import * as jwt from "jsonwebtoken";
 import * as config from "config";
 import * as mongoose from "mongoose";
 import * as log4js from "log4js";
-// routes
-import { HomeController } from './controllers/Home.controller';
-import { AuthController } from './controllers/Auth.controller';
-import { UsersController } from './controllers/Users.controller';
 // models
 import { Error } from './models/Error.model';
 
@@ -22,15 +19,10 @@ class App {
     public logger: any = null;
 
     constructor() {
-        let container = new Container();
-        container.bind<interfaces.Controller>(TYPE.Controller).to(HomeController).whenTargetNamed('HomeController');
-        container.bind<interfaces.Controller>(TYPE.Controller).to(AuthController).whenTargetNamed('AuthController');
-        container.bind<interfaces.Controller>(TYPE.Controller).to(UsersController).whenTargetNamed('UsersController');
         let server = new InversifyExpressServer(container);
 
         mongoose.connect(this.buildMongoUri());
         (<any>mongoose).Promise = Promise;
-        //this.express = express();
         this.buildLoggers();
         this.middleware(server);
 
@@ -38,6 +30,7 @@ class App {
     }
 
     private middleware(server: InversifyExpressServer): void {
+        // set logger
         server.setConfig(app => {
             if (this.logger)
                 app.use(log4js.connectLogger(this.logger, { format: config.get('logs.format') }));
@@ -45,13 +38,19 @@ class App {
             app.use(bodyParser.urlencoded({extended:false}));
             app.use('/api/v1/*', jwtMiddleware({secret: config.get('jwt.secret'), getToken:this.getToken})); // protecting all the routes after
         });
+        // set error fallback
         server.setErrorConfig((app) => {
+            // catch errors
             app.use((err, req, res, next) => {
                 if (err instanceof Error) {
                     res.status(err.httpCode).send(err);
                 } else {
-                    res.status(500).send(new Error(500, 'Unhandled error :\'('));
+                    this.handleErrors(err, res);
                 }
+            });
+            // finally catching 404 at the end
+            app.use((req, res, next) => {
+                res.status(404).send(new Error(404, 'Not found !'))
             });
         });
     }
@@ -75,6 +74,15 @@ class App {
         let uri:string = 'mongodb://' + (username != '' ? username + ':' + password + '@' : '') + hostname + ':' + port + '/' + db;
 
         return uri;
+    }
+
+    private handleErrors(err, res):void {
+        // token error
+        if (err.name === 'UnauthorizedError') {
+            res.status(401).send(new Error(401, 'Not authorized, invalid token.'));
+        } else {
+            res.status(500).send(new Error(500, 'Unhandled error :\'('));
+        }
     }
 
 }

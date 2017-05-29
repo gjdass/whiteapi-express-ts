@@ -1,16 +1,12 @@
+import 'reflect-metadata';
+import { injectable } from 'inversify';
+import { IUserService } from './../interfaces/IUsersService';
 import { IUser } from './../interfaces/IUser';
 import { Error } from '../models/Error.model';
 import User from '../models/User.model';
 
-class UsersService {
-
-    private static _instance:UsersService = new UsersService();
-
-    private constructor() { }
-
-    public static getInstance():UsersService {
-        return UsersService._instance;
-    }
+@injectable()
+export class UserService implements IUserService {
 
     public getAll(): Promise<IUser[]> {
         return new Promise<IUser[]>((resolve, reject) => {
@@ -42,5 +38,3 @@ class UsersService {
     }
 
 }
-
-export default UsersService;
