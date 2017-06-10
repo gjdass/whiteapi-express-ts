@@ -17,9 +17,9 @@ export class UserService implements IUserService {
         });
     }
 
-    public getOneByLogin(login: string): Promise<IUser> {
+    public getOneByUsername(username: string): Promise<IUser> {
         return new Promise<IUser>((resolve, reject) => {
-            User.findOne({ login:login }, (err, res) => {
+            User.findOne({ username:username }, (err, res) => {
                 if (err) { reject(err); }
                 if (!res || res == null) { reject(new Error(404, "User not found.")); }
                 resolve(res);
@@ -29,7 +29,7 @@ export class UserService implements IUserService {
 
     public register(params:object): Promise<IUser> {
         var user = new User({
-            login: params['login'],
+            username: params['username'],
             password: params['password'],
             firstname: params['firstname'],
             lastname: params['lastname']

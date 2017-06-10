@@ -22,7 +22,7 @@ describe('[baseRoute]', () => {
     chai.request(app)
     .get('/')
     .end((err, res) => {
-      expect(res.body.message).to.eql('Hello World!');
+      expect(res.body.message).to.eql('Hello world !');
       done();
     });
   });

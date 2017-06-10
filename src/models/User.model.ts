@@ -9,7 +9,7 @@ import { Promise } from 'es6-promise';
 interface IUserModel extends IUser, mongoose.Document {}
 
 let userSchema = new mongoose.Schema({
-    login: String,
+    username: String,
     password: String,
     firstname: String,
     lastname: String

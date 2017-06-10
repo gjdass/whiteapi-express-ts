@@ -1,12 +1,12 @@
-// DEFAULT DEV CONFIG
+// TEST CONFIG
 {
     "logs": {
         "log4js-config": "test.json"
     },
     "tests": {
         "auth": {
-            "login": "gjdass",
-            "password": "gjdass"
+            "username": "test1",
+            "password": "test1"
         }
     }
 }

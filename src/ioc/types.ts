@@ -1,7 +1,9 @@
 const TYPES = {
     Lodash: Symbol("Lodash"),
 
-    UserService: Symbol("UserService"),
+    CheckTypesHelper: Symbol("ICheckTypesHelper"),
+
+    UserService: Symbol("IUserService"),
 
     HomeController: Symbol("HomeController"),
     UsersController: Symbol("UsersController"),

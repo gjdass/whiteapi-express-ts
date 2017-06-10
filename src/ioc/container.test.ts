@@ -8,6 +8,7 @@ import { AuthController } from './../controllers/Auth.controller';
 import { UsersController } from './../controllers/Users.controller';
 import { IUserService } from './../interfaces/IUsersService';
 import { UserService } from './../services/User.service';
+import { UserServiceMock } from './../services/User.service.mock';
 import { CheckTypesHelper } from './../helpers/CheckTypes.helper';
 
 // Third-parties libraries bindings
@@ -29,7 +30,7 @@ const controllers = new ContainerModule(bind => {
 
 // Services binding
 const services = new ContainerModule(bind => {
-    bind<IUserService>(TYPES.UserService).to(UserService);
+    bind<IUserService>(TYPES.UserService).to(UserServiceMock);
 });
 
 const container = new Container();

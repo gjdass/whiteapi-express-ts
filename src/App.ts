@@ -1,7 +1,6 @@
 import "reflect-metadata";
-import { Container } from 'inversify';
 import { interfaces, InversifyExpressServer, TYPE } from 'inversify-express-utils';
-import { container } from './ioc/container.default'
+import { container } from './ioc/ioc'
 import * as express from "express";
 import * as path from "path";
 import * as bodyParser from "body-parser";
@@ -21,8 +20,7 @@ class App {
     constructor() {
         let server = new InversifyExpressServer(container);
 
-        mongoose.connect(this.buildMongoUri());
-        (<any>mongoose).Promise = Promise;
+        this.connectToMongo();
         this.buildLoggers();
         this.middleware(server);
 
@@ -50,7 +48,7 @@ class App {
             });
             // finally catching 404 at the end
             app.use((req, res, next) => {
-                res.status(404).send(new Error(404, 'Not found !'))
+                res.status(404).send(new Error(404, 'Not found !'));
             });
         });
     }
@@ -64,7 +62,9 @@ class App {
         this.logger = log4js.getLogger();
     }
 
-    private buildMongoUri():string {
+    private connectToMongo():void {
+        if (process.env.NODE_ENV == 'test') return;
+
         let username:string = config.get('mongo.username') as string;
         let password:string = config.get('mongo.password') as string;
         let hostname:string = config.get('mongo.hostname') as string;
@@ -73,7 +73,8 @@ class App {
 
         let uri:string = 'mongodb://' + (username != '' ? username + ':' + password + '@' : '') + hostname + ':' + port + '/' + db;
 
-        return uri;
+        mongoose.connect(uri);
+        (<any>mongoose).Promise = Promise;
     }
 
     private handleErrors(err, res):void {
