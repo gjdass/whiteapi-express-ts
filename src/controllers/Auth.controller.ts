@@ -27,7 +27,8 @@ export class AuthController {
             // here we authenticate the user
             let user = await this._usersService.getOneByUsername(username);
             if (user.password === password) {
-                let token = jwt.sign(user.username, 
+                let payload = {username:user.username};
+                let token = jwt.sign(payload, 
                         config.get('jwt.secret') as string, 
                         { expiresIn: config.get('jwt.expire') as string });
                 return new Success(200, "Connected.", {token: token});
