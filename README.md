@@ -1,11 +1,25 @@
 # Node API in TypeScript
 
-[![build status](https://gitlab.gjdass.fr/gjdass/whiteapi-express-ts/badges/master/build.svg)](https://gitlab.gjdass.fr/gjdass/whiteapi-express-api-ts/commits/master)
+[![build status](https://gitlab.gjdass.fr/gjdass/whiteapi-express-ts/badges/master/build.svg)](https://gitlab.gjdass.fr/gjdass/whiteapi-express-ts/commits/master)
 
 This is a white-app designed to start a node ExpressJS API using TypeScript.
 You can clone it and start to build your own API.
 
 **WIP**
+
+## Goal
+
+The goal is quite simple : provide a complete API skeleton that is modern, not so difficult to understand and integrate, and well-tested (as well as I can).
+
+Typescript is the way to go imo. It allows back-end developers (C#, Java) to better understand and jump into the Javascript&co world ans so on. Thanks to TS, we can now think about making big projects without worrying too much about the maintainability of the code anymore (Javascript, ES5, was messy imo).
+
+Node is a pretty young engine but with a lot of documentation out there. It's fast, and does not require to install huge softwares/tools to run. It's also certainly easier to undertand a NodeJS API when you come from front-end Javascript than a big C# API.
+
+Don't hesitate to fork and modify this code as much as you want. I made some choice that can certainly be discussed.
+
+**Note :** I'm learning Typescript and NodeJS at the same time here so some errors (even big ones) may occur. Sorry for that.
+
+***
 
 ## Summary
 
@@ -18,6 +32,7 @@ You can clone it and start to build your own API.
     - [Test](#test)
 - [Configuration](#configuration)
 - [Logs](#logs)
+- [Inversion of Control](#inversion-of-control)
 - [Gulp](#gulp)
 - [CI with GitLab](#ci-with-gitlab)
 - [Datas storage](#datas-storage)
@@ -46,6 +61,8 @@ __Note__ : dependencies are for now not well versionned since I don't really car
 ## Commands
 
 `npm` handles all the commands for the project. It uses `gulp` underneath for build and watch.
+
+**Note :** webpack may someday replace gulp in the project. It's [an issue](https://gitlab.gjdass.fr/gjdass/whiteapi-express-ts/issues/17) I created on the GitLab.
 
 ### Watch
 
@@ -158,7 +175,13 @@ Out of the box, supported log methods are :
 
 The log4js configuration files are loaded regarding the `logs.log4js-config` field into general `config/` files. Help yourself ;o)
 
-**TODO** : integrate ELK stack to the project and to the build pipeline [issue #14](https://gitlab.gjdass.fr/gjdass/whiteapi-express-api-ts/issues/14)
+**TODO** : integrate ELK stack to the project and to the build pipeline [issue #14](https://gitlab.gjdass.fr/gjdass/whiteapi-express-ts/issues/14)
+
+## Inversion of control
+
+The API is running thanks to [inversify](http://inversify.io/).
+
+As explain, OO can be dangerous if not well used.
 
 ## Gulp
 
@@ -175,7 +198,7 @@ The project uses Gitlab-CI in order to build and run tests. There is not so much
 
 ## Datas storage
 
-The final goal is to provide several ways to store datas with the API. The first example provided is Mongo but at the end, `sequelize` will help us to provide some other ways (SQL). It would be nice to let developers chose their best option.
+The final goal is to provide several ways to store datas with the API. The first example provided is Mongo but at the end, [typedorm](https://www.npmjs.com/package/typeorm) will help us to provide some other ways (SQL). It would be nice to let developers chose their best option.
 
 It will be one of the next improvement. It must be well-written so it's gonna take time.
 
@@ -184,6 +207,8 @@ It will be one of the next improvement. It must be well-written so it's gonna ta
 The only way to store datas for now. Very basic implementation for now. Not perfect at all.
 
 Configuration for mongo is available in `config/` env files.
+
+**Note :** Mongo is obviously disabled for tests.
 
 ***
 
