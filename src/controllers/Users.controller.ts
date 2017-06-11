@@ -1,29 +1,38 @@
-import {Get, JsonController, Param} from 'routing-controllers';
+import 'reflect-metadata';
+import { Controller, Get, RequestParam, } from 'inversify-express-utils';
+import { injectable, inject } from 'inversify';
+import { ICheckTypesHelper } from "../ioc/interfaces";
 import { Success } from './../models/Success.model';
-import UsersService from './../services/Users.service';
-import { Router, Request, Response, NextFunction } from 'express';
-let _service = UsersService.getInstance();
+import { Error } from './../models/Error.model';
+import { TYPES } from "../ioc/types";
+import { IUserService } from './../interfaces/IUsersService';
 
-@JsonController('/api/v1/users')
+@Controller('/api/v1/users')
+@injectable()
 export class UsersController {
+
+    constructor(@inject(TYPES.UserService) private _userService: IUserService,
+                @inject(TYPES.CheckTypesHelper) private _checkTypesHelper: ICheckTypesHelper) {}
 
     @Get('/')
     public async getAll() {
-        let users = await _service.getAll().then(datas => {
-            return (new Success(200, "Users list found.", datas));
-        }, error => {
-            return error;
-        });
-        return users;
+        try {
+            let users = await this._userService.getAll();
+            return new Success(200, 'Users retrieved.', users);
+        } catch (err) {
+            throw err;
+        }
     }
 
-    @Get('/:login')
-    public async getOne(@Param("login") login: string) {
-        let user = await _service.getOneByLogin(login).then(datas => {
-            return (new Success(200, "User found.", datas));
-        }, error => {
-            return error;
-        });
-        return user;
+    @Get('/:username')
+    public async getOne(@RequestParam("username") username: string) {
+        try {
+            if (!this._checkTypesHelper.checkParams([username], ['string']))
+                throw new Error(400, 'Bad request. Please provide username.');
+            let user = await this._userService.getOneByUsername(username);
+            return new Success(200, 'User retrieved.', user);
+        } catch (err) {
+            throw err;
+        }
     }
 }

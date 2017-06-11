@@ -1,16 +1,12 @@
+import 'reflect-metadata';
+import { injectable } from 'inversify';
+import { IUserService } from './../interfaces/IUsersService';
+import { IUser } from './../interfaces/IUser';
 import { Error } from '../models/Error.model';
 import User from '../models/User.model';
-import IUser from '../interfaces/IUser.interface';
 
-class UsersService {
-
-    private static _instance:UsersService = new UsersService();
-
-    private constructor() { }
-
-    public static getInstance():UsersService {
-        return UsersService._instance;
-    }
+@injectable()
+export class UserService implements IUserService {
 
     public getAll(): Promise<IUser[]> {
         return new Promise<IUser[]>((resolve, reject) => {
@@ -21,9 +17,9 @@ class UsersService {
         });
     }
 
-    public getOneByLogin(login: string): Promise<IUser> {
+    public getOneByUsername(username: string): Promise<IUser> {
         return new Promise<IUser>((resolve, reject) => {
-            User.findOne({ login:login }, (err, res) => {
+            User.findOne({ username:username }, (err, res) => {
                 if (err) { reject(err); }
                 if (!res || res == null) { reject(new Error(404, "User not found.")); }
                 resolve(res);
@@ -31,9 +27,9 @@ class UsersService {
         });
     }
 
-    public register(params:object):any {
+    public register(params:object): Promise<IUser> {
         var user = new User({
-            login: params['login'],
+            username: params['username'],
             password: params['password'],
             firstname: params['firstname'],
             lastname: params['lastname']
@@ -42,5 +38,3 @@ class UsersService {
     }
 
 }
-
-export default UsersService;

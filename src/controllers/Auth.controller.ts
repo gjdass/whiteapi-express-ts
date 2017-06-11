@@ -1,40 +1,53 @@
-import { Success } from './../models/Success.model';
-import {HttpError, InternalServerError, Body, BadRequestError, JsonController, Post, BodyParam, NotFoundError} from 'routing-controllers';
-import UsersService from './../services/Users.service';
+import 'reflect-metadata';
+import { Controller, Get, Post, RequestParam, RequestBody } from 'inversify-express-utils';
+import { injectable, inject } from 'inversify';
+import { ICheckTypesHelper } from "../ioc/interfaces";
 import * as jwt from "jsonwebtoken"
 import * as config from "config";
-let _usersService = UsersService.getInstance();
+import { TYPES } from "../ioc/types";
+import { IHttpResponse } from './../interfaces/IHttpResponse';
+import { Success } from './../models/Success.model';
+import { Error } from './../models/Error.model';
+import { IUserService } from './../interfaces/IUsersService';
 
-@JsonController("/auth")
+@Controller("/auth")
+@injectable()
 export class AuthController {
 
+    constructor(@inject(TYPES.UserService) private _usersService:IUserService,
+                @inject(TYPES.CheckTypesHelper) private _checkTypesHelper: ICheckTypesHelper) {}
+
     @Post("/login")
-    public async login(@BodyParam("username") username: string,
-                       @BodyParam("password") password: string)
+    public async login(@RequestBody("username") username: string,
+                       @RequestBody("password") password: string): Promise<IHttpResponse>
     {
-        // here we authenticate the user
-        let token = await _usersService.getOneByLogin(username).then(user => {
+        try {
+            if (!this._checkTypesHelper.checkParams([username, password],['string', 'string']))
+                throw new Error(400, 'Bad request. Please provide username and password.');
+            // here we authenticate the user
+            let user = await this._usersService.getOneByUsername(username);
             if (user.password === password) {
-                let token = jwt.sign({login:user.login}, 
-                    config.get('jwt.secret') as string, 
-                    { expiresIn: config.get('jwt.expire') as string });
+                let payload = {username:user.username};
+                let token = jwt.sign(payload, 
+                        config.get('jwt.secret') as string, 
+                        { expiresIn: config.get('jwt.expire') as string });
                 return new Success(200, "Connected.", {token: token});
             } else {
-                return new BadRequestError("Bad password.");
+                throw new Error(401, 'Bad Password.');
             }
-        }, error => {
-            return new NotFoundError("User not found.");
-        });
-        return token;
+        } catch (err) {
+            throw err;
+        }
     }
 
     @Post("/register")
-    public async register(@Body() user: any) {
-        return await _usersService.register(user).then(datas => {
-            return new Success(201, "User created.");
-        }, error => {
-            return new InternalServerError("Can't register right now, sorry.");
-        });
+    public async register(@RequestBody() user: any): Promise<IHttpResponse> {
+        try {
+            await this._usersService.register(user);
+            return new Success(200, 'User created.');
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

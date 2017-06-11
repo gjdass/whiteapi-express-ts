@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Lancer le programme",
+            "name": "Debug mode",
             "program": "${workspaceRoot}/src/index.ts",
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,

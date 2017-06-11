@@ -18,7 +18,7 @@ describe('[usersRoute]', () => {
     chai.request(app)
     .post('/auth/login')
     .send({
-      login: config.get("tests.auth.login"),
+      username: config.get("tests.auth.username"),
       password: config.get("tests.auth.password")
     })
     .end((err, res) => {
@@ -52,13 +52,13 @@ describe('[usersRoute]', () => {
 
   it('GET /users/<user> should return 200 with a user object', (done) => {
     chai.request(app)
-    .get('/api/v1/users/' + config.get('tests.auth.login'))
+    .get('/api/v1/users/' + config.get('tests.auth.username'))
     .set('Authorization', token)
     .end((err, res) => {
       expect(res).to.be.json;
       expect(res.status).to.equal(200);
       expect(res.body.datas).to.be.an('object');
-      expect(res.body.datas).to.have.property('login', config.get('tests.auth.login'));
+      expect(res.body.datas).to.have.property('username', config.get('tests.auth.username'));
       done();
     });
   });

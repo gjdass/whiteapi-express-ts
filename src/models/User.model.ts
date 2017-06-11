@@ -2,14 +2,14 @@
  * Mongo User schema
  */
 
-import IUser from '../interfaces/IUser.interface';
+import { IUser } from '../interfaces/IUser';
 import * as mongoose from 'mongoose';
 import { Promise } from 'es6-promise';
 
 interface IUserModel extends IUser, mongoose.Document {}
 
 let userSchema = new mongoose.Schema({
-    login: String,
+    username: String,
     password: String,
     firstname: String,
     lastname: String

@@ -1,12 +1,13 @@
-import { HttpError } from 'routing-controllers';
+import { IHttpResponse } from './../interfaces/IHttpResponse';
 
-export class Error extends HttpError {
-    public httpError: number;
+export class Error implements IHttpResponse {
+    public httpCode: number;
     public message: string;
+    public datas: object;
 
     constructor(_httpCode:number, _message:string) {
-        super(_httpCode, _message);
-        this.httpError = _httpCode;
+        this.httpCode = _httpCode;
         this.message = _message;
+        this.datas = {};
     }
 }
