@@ -181,7 +181,12 @@ The log4js configuration files are loaded regarding the `logs.log4js-config` fie
 
 The API is running thanks to [inversify](http://inversify.io/).
 
-As explain, OO can be dangerous if not well used.
+As explained into inversify documentation, OO can be dangerous if not well used. IoC allows us to manage properly what we are doing, where, and when.
+Explaining IoC is not the point here, there is a lot of great articles online about that.
+
+All the IoC configuration can be found into the `./src/ioc` folder. The rest talks for itself. We basically load different containers whether we are testing or just running the API. A lot more can be done and customized. IoC allows us to test easily our controllers for example, by replacing a service by a mocked one.
+
+[A great explanation about IoC](https://medium.com/notes-from-icelab/better-code-with-an-inversion-of-control-container-6e3d3af9095)
 
 ## Gulp
 
