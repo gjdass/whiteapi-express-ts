@@ -1,9 +1,10 @@
-import { IUser } from './IUser';
+import { User } from './../models/User.model';
 
 export interface IUserService {
 
-    getAll(): Promise<IUser[]>;
-    getOneByUsername(username: string): Promise<IUser>;
-    register(params:object): Promise<IUser>;
+    getAll(): Promise<User[]>;
+    getOneByEmail(username: string): Promise<User>;
+    getOneById(id: number): Promise<User>;
+    register(params:object): Promise<User>;
 
 }

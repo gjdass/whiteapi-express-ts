@@ -1,33 +1,26 @@
-import 'reflect-metadata';
-import { Controller, Get, Post, RequestParam, RequestBody } from 'inversify-express-utils';
-import { injectable, inject } from 'inversify';
-import { ICheckTypesHelper } from "../ioc/interfaces";
+import "reflect-metadata";
+import { User } from './../models/User.model';
 import * as jwt from "jsonwebtoken"
 import * as config from "config";
-import { TYPES } from "../ioc/types";
 import { IHttpResponse } from './../interfaces/IHttpResponse';
 import { Success } from './../models/Success.model';
 import { Error } from './../models/Error.model';
-import { IUserService } from './../interfaces/IUsersService';
+import { JsonController, Post, BodyParam, Body } from "routing-controllers";
+import { UserService } from "../services/User.service";
 
-@Controller("/auth")
-@injectable()
+@JsonController("/auth")
 export class AuthController {
 
-    constructor(@inject(TYPES.UserService) private _usersService:IUserService,
-                @inject(TYPES.CheckTypesHelper) private _checkTypesHelper: ICheckTypesHelper) {}
+    constructor(private _usersService: UserService) {}
 
     @Post("/login")
-    public async login(@RequestBody("username") username: string,
-                       @RequestBody("password") password: string): Promise<IHttpResponse>
+    public async login(@BodyParam("email") email: string, @BodyParam("password") password: string): Promise<IHttpResponse>
     {
         try {
-            if (!this._checkTypesHelper.checkParams([username, password],['string', 'string']))
-                throw new Error(400, 'Bad request. Please provide username and password.');
             // here we authenticate the user
-            let user = await this._usersService.getOneByUsername(username);
+            let user = await this._usersService.getOneByEmail(email);
             if (user.password === password) {
-                let payload = {username:user.username};
+                let payload = {email:user.email};
                 let token = jwt.sign(payload, 
                         config.get('jwt.secret') as string, 
                         { expiresIn: config.get('jwt.expire') as string });
@@ -41,7 +34,7 @@ export class AuthController {
     }
 
     @Post("/register")
-    public async register(@RequestBody() user: any): Promise<IHttpResponse> {
+    public async register(@Body() user: User): Promise<IHttpResponse> {
         try {
             await this._usersService.register(user);
             return new Success(200, 'User created.');

@@ -1,22 +1,17 @@
-/**
- * Mongo User schema
- */
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
-import { IUser } from '../interfaces/IUser';
-import * as mongoose from 'mongoose';
-import { Promise } from 'es6-promise';
-
-interface IUserModel extends IUser, mongoose.Document {}
-
-let userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    firstname: String,
-    lastname: String
-});
-
-let User = mongoose.model<IUserModel>("User", userSchema);
-
-export default User;
-
-// see documentation here for better comprehension : https://github.com/Appsilon/styleguide/wiki/mongoose-typescript-models
+@Entity()
+export class User {
+    @PrimaryGeneratedColumn()
+    id: number;
+    @Column({length: 255})
+    email: string;
+    @Column()
+    password: string;
+    @Column({length: 255})
+    firstname: string;
+    @Column({length: 255})
+    lastname: string;
+    @Column("int")
+    birthdate: number;
+}

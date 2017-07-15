@@ -1,11 +1,8 @@
-import 'reflect-metadata';
-import { Controller, Get, RequestParam, } from 'inversify-express-utils';
-import { injectable } from 'inversify';
+import { JsonController, Get } from 'routing-controllers';
 import { IHttpResponse } from './../interfaces/IHttpResponse';
 import { Success } from './../models/Success.model';
 
-@Controller('/')
-@injectable()
+@JsonController('/')
 export class HomeController {
 
     @Get('/')

@@ -1,18 +1,12 @@
-import 'reflect-metadata';
-import { Controller, Get, RequestParam, } from 'inversify-express-utils';
-import { injectable, inject } from 'inversify';
-import { ICheckTypesHelper } from "../ioc/interfaces";
+import { JsonController, Get, Param } from 'routing-controllers';
 import { Success } from './../models/Success.model';
 import { Error } from './../models/Error.model';
-import { TYPES } from "../ioc/types";
-import { IUserService } from './../interfaces/IUsersService';
+import { UserService } from "../services/User.service";
 
-@Controller('/api/v1/users')
-@injectable()
+@JsonController('/api/v1/users')
 export class UsersController {
 
-    constructor(@inject(TYPES.UserService) private _userService: IUserService,
-                @inject(TYPES.CheckTypesHelper) private _checkTypesHelper: ICheckTypesHelper) {}
+    constructor(private _userService: UserService) {}
 
     @Get('/')
     public async getAll() {
@@ -24,12 +18,10 @@ export class UsersController {
         }
     }
 
-    @Get('/:username')
-    public async getOne(@RequestParam("username") username: string) {
+    @Get('/:id')
+    public async getOne(@Param("id") id: number) {
         try {
-            if (!this._checkTypesHelper.checkParams([username], ['string']))
-                throw new Error(400, 'Bad request. Please provide username.');
-            let user = await this._userService.getOneByUsername(username);
+            let user = await this._userService.getOneById(id);
             return new Success(200, 'User retrieved.', user);
         } catch (err) {
             throw err;
