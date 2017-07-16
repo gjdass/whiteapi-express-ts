@@ -1,13 +1,13 @@
-import { JsonController, Get } from 'routing-controllers';
-import { IHttpResponse } from './../interfaces/IHttpResponse';
-import { Success } from './../models/Success.model';
+import { JsonController, Get } from "routing-controllers";
+import { IHttpResponse } from "./../interfaces/IHttpResponse";
+import { Success } from "./../models/Success.model";
 
-@JsonController('/')
+@JsonController("/")
 export class HomeController {
 
-    @Get('/')
+    @Get("/")
     public helloWorld(): IHttpResponse {
-        return new Success(200, "Hello world !")
+        return new Success(200, "Hello world !");
     }
 
 }

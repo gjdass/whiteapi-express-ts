@@ -1,13 +1,13 @@
-import { IHttpResponse } from './../interfaces/IHttpResponse';
+import { IHttpResponse } from "./../interfaces/IHttpResponse";
 
 export class Error implements IHttpResponse {
     public httpCode: number;
     public message: string;
     public datas: object;
 
-    constructor(_httpCode:number, _message:string) {
-        this.httpCode = _httpCode;
-        this.message = _message;
+    constructor(httpCode: number, message: string) {
+        this.httpCode = httpCode;
+        this.message = message;
         this.datas = {};
     }
 }

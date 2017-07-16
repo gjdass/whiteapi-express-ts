@@ -36,12 +36,15 @@
     "cross-env": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.5.1",
+    "gulp-tslint": "^8.1.1",
     "gulp-typescript": "^3.1.5",
     "mocha": "^3.4.2",
     "mockery": "^2.0.0",
     "path": "^0.12.7",
     "sinon": "^2.2.0",
-    "ts-node": "^2.1.0",
+    "ts-node": "^2.1.2",
+    "tslint": "^5.5.0",
+    "tslint-stylish": "^2.1.0",
     "typescript": "^2.2.1"
   },
   "dependencies": {

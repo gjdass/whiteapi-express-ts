@@ -1,32 +1,32 @@
 import "reflect-metadata";
-import { User } from './../models/User.model';
-import * as jwt from "jsonwebtoken"
+import { User } from "./../models/User.model";
+import * as jwt from "jsonwebtoken";
 import * as config from "config";
-import { IHttpResponse } from './../interfaces/IHttpResponse';
-import { Success } from './../models/Success.model';
-import { Error } from './../models/Error.model';
+import { IHttpResponse } from "./../interfaces/IHttpResponse";
+import { Success } from "./../models/Success.model";
+import { Error } from "./../models/Error.model";
 import { JsonController, Post, BodyParam, Body } from "routing-controllers";
 import { UserService } from "../services/User.service";
 
 @JsonController("/auth")
 export class AuthController {
 
-    constructor(private _usersService: UserService) {}
+    constructor(private usersService: UserService) {}
 
     @Post("/login")
-    public async login(@BodyParam("email") email: string, @BodyParam("password") password: string): Promise<IHttpResponse>
-    {
+    public async login(@BodyParam("email") email: string, @BodyParam("password") password: string)
+                 : Promise<IHttpResponse> {
         try {
             // here we authenticate the user
-            let user = await this._usersService.getOneByEmail(email);
+            const user = await this.usersService.getOneByEmail(email);
             if (user.password === password) {
-                let payload = {email:user.email};
-                let token = jwt.sign(payload, 
-                        config.get('jwt.secret') as string, 
-                        { expiresIn: config.get('jwt.expire') as string });
-                return new Success(200, "Connected.", {token: token});
+                const payload = {email: user.email};
+                const token = jwt.sign(payload,
+                        config.get("jwt.secret") as string,
+                        { expiresIn: config.get("jwt.expire") as string });
+                return new Success(200, "Connected.", {token});
             } else {
-                throw new Error(401, 'Bad Password.');
+                throw new Error(401, "Bad Password.");
             }
         } catch (err) {
             throw err;
@@ -36,8 +36,8 @@ export class AuthController {
     @Post("/register")
     public async register(@Body() user: User): Promise<IHttpResponse> {
         try {
-            await this._usersService.register(user);
-            return new Success(200, 'User created.');
+            await this.usersService.register(user);
+            return new Success(200, "User created.");
         } catch (err) {
             throw err;
         }
