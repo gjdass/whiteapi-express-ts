@@ -5,8 +5,6 @@ import { createExpressServer, useContainer } from "routing-controllers";
 import { Container } from "typedi";
 import { Connection, createConnection, useContainer as ormUseContainer } from "typeorm";
 import * as express from "express";
-import * as jwtMiddleware from "express-jwt";
-import * as jwt from "jsonwebtoken";
 import * as log4js from "log4js";
 import * as path from "path";
 // controllers
@@ -19,10 +17,17 @@ class App {
     public express: express.Application;
     public logger: any = null;
     private controllers: any[] = [HomeController, UsersController, AuthController];
+    private middlewares: express.RequestHandler[] = [
+        log4js.connectLogger(this.getLoggers(), { format: config.get("logs.format") }),
+        bodyParser.json(),
+        bodyParser.urlencoded({extended: false})
+    ];
 
     constructor() {
         useContainer(Container);
         ormUseContainer(Container);
+        // DB
+        // TODO : put this into a separate function and put the strings into the config files
         createConnection({
             name: "default",
             driver: {
@@ -38,48 +43,17 @@ class App {
             ],
             autoSchemaSync: true,
         });
+        // create the express server with proper configuration
         this.express = createExpressServer({
-            controllers: this.controllers,
+            routePrefix: "/api/v1",
+            controllers: this.controllers
         });
-        this.buildLoggers();
-        this.middleware();
+        this.express.use(this.middlewares);
     }
 
-    private middleware(): void {
-        // set logger
-        if (this.logger) {
-            this.express.use(log4js.connectLogger(this.logger, { format: config.get("logs.format") }));
-        }
-        this.express.use(bodyParser.json());
-        this.express.use(bodyParser.urlencoded({extended: false}));
-        this.express.use("/api/v1/*", jwtMiddleware({secret: config.get("jwt.secret"), getToken: this.getToken}));
-    }
-
-    private getToken(req: Request): string {
-        return req.headers.get("authorization");
-    }
-
-    private buildLoggers(): void {
+    private getLoggers(): log4js.Logger {
         log4js.configure(path.join("config/log4js", config.get("logs.log4js-config") as string));
-        this.logger = log4js.getLogger();
-    }
-
-    private async connectToDb(): Promise<Connection> {
-        return createConnection({
-            name: "default",
-            driver: {
-                type: "postgres",
-                host: "gjdass.fr",
-                port: 5432,
-                username: "whiteapi-express-ts",
-                password: "whiteapi-express-ts",
-                database: "whiteapi-express-ts",
-            },
-            entities: [
-                path.join(path.normalize(__dirname), path.normalize("models/User.model.js"))
-            ],
-            autoSchemaSync: true,
-        });
+        return log4js.getLogger();
     }
 
 }

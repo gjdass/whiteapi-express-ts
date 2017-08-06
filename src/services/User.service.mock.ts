@@ -18,7 +18,6 @@ export class UserServiceMock implements IUserService {
 
     public getAll(): Promise<User[]> {
         return new Promise<User[]>((resolve, reject) => {
-            console.log("coucou mon coeur, je t aime", this.users);
             resolve(this.users);
         });
     }

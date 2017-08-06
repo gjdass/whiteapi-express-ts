@@ -1,9 +1,11 @@
-import { JsonController, Get, Param } from "routing-controllers";
+import { JsonController, Get, Param, UseBefore } from "routing-controllers";
 import { Success } from "./../models/Success.model";
 import { Error } from "./../models/Error.model";
 import { UserService } from "../services/User.service";
+import { AuthMiddleware } from "../middlewares/Auth.middleware";
 
-@JsonController("/api/v1/users")
+@JsonController("/users")
+@UseBefore(AuthMiddleware) // protects the route thanks to a middleware
 export class UsersController {
 
     constructor(private userService: UserService) {}
@@ -12,7 +14,7 @@ export class UsersController {
     public async getAll() {
         try {
             const users = await this.userService.getAll();
-            return new Success(200, "Users retrieved.", users);
+            return users;
         } catch (err) {
             throw err;
         }
@@ -22,7 +24,7 @@ export class UsersController {
     public async getOne(@Param("id") id: number) {
         try {
             const user = await this.userService.getOneById(id);
-            return new Success(200, "User retrieved.", user);
+            return user;
         } catch (err) {
             throw err;
         }
