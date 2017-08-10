@@ -5,10 +5,13 @@ const path = require('path');
 const tslint = require('gulp-tslint');
 const stylish = require('tslint-stylish')
 const TS_FILES = ['src/**/*.ts'];
+const TESTS_FILES = ['tests/**/*.ts'];
 const JSON_FILES = ['src/**/*.json'];
 const DEST = 'dist';
+const DEST_TESTS = 'dist-tests';
 
 const tsProject = ts.createProject('tsconfig.json');
+const testProject = ts.createProject('tsconfig-tests.json');
 
 // BUILD TypeScript
 gulp.task('build-ts', () => {
@@ -40,6 +43,15 @@ gulp.task('build-assets', function() {
 gulp.task('watch', ['tslint', 'build-ts', 'build-assets'], () => {
     gulp.watch(TS_FILES, ['tslint', 'build-ts']);
     gulp.watch(JSON_FILES, ['build-assets']);
+});
+
+gulp.task('build-tests', () => {
+    const tsResult = testProject.src()
+        .pipe(sourcemaps.init())
+        .pipe(testProject());
+    return tsResult.js
+        .pipe(sourcemaps.write('.', {sourceRoot:''}))
+        .pipe(gulp.dest(DEST_TESTS));
 });
 
 gulp.task('default', ['watch']);
