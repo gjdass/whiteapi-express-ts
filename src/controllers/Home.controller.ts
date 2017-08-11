@@ -6,8 +6,8 @@ import { Success } from "./../models/Success.model";
 export class HomeController {
 
     @Get("/")
-    public helloWorld(): IHttpResponse {
-        return new Success(200, "Hello world !");
+    public helloWorld(): any {
+        return "Hello world !";
     }
 
 }
