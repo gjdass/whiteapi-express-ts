@@ -7,7 +7,8 @@
     "start": "nodemon dist/index.js",
     "build": "gulp build",
     "watch": "gulp",
-    "test": "gulp build && cross-env NODE_ENV=test mocha --reporter spec dist/*.spec.js dist/**/*.spec.js"
+    "test": "gulp build && cross-env NODE_ENV=test mocha --reporter spec dist/*.spec.js dist/**/*.spec.js",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -x \"**/*.spec.js\" -- dist/**/*.spec.js"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +39,7 @@
     "gulp-sourcemaps": "^2.5.1",
     "gulp-tslint": "^8.1.1",
     "gulp-typescript": "^3.1.5",
+    "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
     "mocha-typescript": "^1.1.7",
     "path": "^0.12.7",

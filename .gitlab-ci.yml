@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - coverage
 
 build:
   stage: build
@@ -28,3 +29,12 @@ test:
   - build
   script:
   - npm test
+
+coverage:
+  stage: coverage
+  tags:
+  - node
+  dependencies:
+  - build
+  script:
+  - npm run coverage
