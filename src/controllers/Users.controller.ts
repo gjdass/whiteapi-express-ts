@@ -3,12 +3,14 @@ import { Success } from "./../models/Success.model";
 import { Error } from "./../models/Error.model";
 import { UserService } from "../services/User.service";
 import { AuthMiddleware } from "../middlewares/Auth.middleware";
+import { Inject } from "typedi";
+import { IUserService } from "../interfaces/IUsersService";
 
 @JsonController("/users")
-@UseBefore(AuthMiddleware) // protects the route thanks to a middleware
+@UseBefore(AuthMiddleware)
 export class UsersController {
 
-    constructor(private userService: UserService) {}
+    constructor(@Inject("user.service") private userService: IUserService) {}
 
     @Get("/")
     public async getAll() {

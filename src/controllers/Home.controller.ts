@@ -5,7 +5,7 @@ import { Success } from "./../models/Success.model";
 @JsonController("/")
 export class HomeController {
 
-    @Get("/")
+    @Get()
     public helloWorld(): any {
         return "Hello world !";
     }

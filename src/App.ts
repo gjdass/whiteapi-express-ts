@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import * as bodyParser from "body-parser";
 import * as config from "config";
-import { createExpressServer, useContainer } from "routing-controllers";
+import { createExpressServer, useContainer as routingUseContainer } from "routing-controllers";
 import { Container } from "typedi";
 import { Connection, createConnection, useContainer as ormUseContainer } from "typeorm";
 import * as express from "express";
@@ -24,7 +24,7 @@ class App {
     ];
 
     constructor() {
-        useContainer(Container);
+        routingUseContainer(Container);
         ormUseContainer(Container);
         // DB
         // TODO : put this into a separate function and put the strings into the config files

@@ -22,12 +22,13 @@ class HomeControllerTests {
     }
 
     @test("/api/v1 should return Hello world")
-    public ShouldReturnHelloWorld() {
+    public ShouldReturnHelloWorld(done: any) {
         chai.request(expressServer)
-        .get("/api/v1/")
+        .get("/api/v1")
         .end((err: any, res: ChaiHttp.Response) => {
             expect(res.status).to.be.equal(200);
             expect(res.body).to.be.equal("Hello world !");
+            done();
         });
     }
 

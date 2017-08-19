@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug mode",
+            "name": "App debug",
             "program": "${workspaceRoot}/src/index.ts",
             "cwd": "${workspaceRoot}",
             "stopOnEntry": false,
@@ -15,9 +15,21 @@
             "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
             ],
-            "env": {
-                "NODE_ENV": "debug"
-            }
+            "env": { "NODE_ENV": "debug" }
+        },
+        {
+			"type": "node",
+            "request": "launch",
+			"name": "Mocha debug",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": ["--reporter", "spec", "--timeout", "0", "${workspaceRoot}/dist/*.spec.js", "${workspaceRoot}/dist/**/*.spec.js"],
+			"cwd": "${workspaceRoot}",
+			"stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.spec.js"
+            ],
+            "env": { "NODE_ENV": "test"}
         }
     ]
 }
