@@ -1,17 +1,17 @@
-import "reflect-metadata";
-import { User } from "./../models/User.model";
 import * as jwt from "jsonwebtoken";
 import * as config from "config";
+import { Inject } from "typedi";
+import { JsonController, Post, BodyParam, Body } from "routing-controllers";
+import { User } from "./../models/User.model";
 import { IHttpResponse } from "./../interfaces/IHttpResponse";
 import { Success } from "./../models/Success.model";
 import { Error } from "./../models/Error.model";
-import { JsonController, Post, BodyParam, Body } from "routing-controllers";
-import { UserService } from "../services/User.service";
+import { IUserService } from "./../interfaces/IUsersService";
 
 @JsonController("/auth")
 export class AuthController {
 
-    constructor(private usersService: UserService) {}
+    constructor(@Inject("user.service") private usersService: IUserService) {}
 
     @Post("/login")
     public async login(@BodyParam("email") email: string, @BodyParam("password") password: string)

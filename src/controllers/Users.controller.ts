@@ -1,9 +1,8 @@
 import { JsonController, Get, Param, UseBefore } from "routing-controllers";
+import { Inject } from "typedi";
 import { Success } from "./../models/Success.model";
 import { Error } from "./../models/Error.model";
-import { UserService } from "../services/User.service";
 import { AuthMiddleware } from "../middlewares/Auth.middleware";
-import { Inject } from "typedi";
 import { IUserService } from "../interfaces/IUsersService";
 
 @JsonController("/users")
